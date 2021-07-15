@@ -21,6 +21,9 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     @Autowired
     private AutenticacaoService autenticacaoService;
 
+    @Autowired
+    private TokenService tokenService;
+
     @Override
     @Bean //Avisa que esse metodo devolve uma instancia de si mesmo
     protected AuthenticationManager authenticationManager() throws Exception{
@@ -52,7 +55,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 //Avisa ao spring para nao criar sessão, pois a politica de autenticacao sera STATELESS
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //Avisa pra rodar a classe 'AutenticacaoViaToken..' antes de seguir a execucao
-                .and().addFilterBefore(new AutenticacaoViaTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
     }
 
     //Configurações de recursos estáticos (requisições para arquivo js, css, imagens..)

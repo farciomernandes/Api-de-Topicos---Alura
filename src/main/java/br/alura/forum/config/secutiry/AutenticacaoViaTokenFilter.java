@@ -13,13 +13,20 @@ import java.io.IOException;
 //Essa classe vai funcionar como um middleware
 public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
+
+    private TokenService tokenService;
+
+    public AutenticacaoViaTokenFilter(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
+
     //Antes de ir para a requisicao ele verifica se o token do cabeçario ta OK e autentica o usuario
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String token = recuperarToken(request);
-        System.out.println("SACA SÓ:  " + token);
-
+        boolean valido = tokenService.isTokenValido(token);
+        System.out.println(valido);
         //linha que manda o spring seguir normalmente para a requisicao que chamou
         filterChain.doFilter(request, response);
     }
