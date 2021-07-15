@@ -1,5 +1,6 @@
 package br.alura.forum.config.secutiry;
 
+import br.alura.forum.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,9 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Override
     @Bean //Avisa que esse metodo devolve uma instancia de si mesmo
@@ -55,7 +59,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 //Avisa ao spring para nao criar sessão, pois a politica de autenticacao sera STATELESS
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //Avisa pra rodar a classe 'AutenticacaoViaToken..' antes de seguir a execucao
-                .and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
     }
 
     //Configurações de recursos estáticos (requisições para arquivo js, css, imagens..)
