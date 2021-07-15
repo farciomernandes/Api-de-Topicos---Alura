@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity //Avisa que e classe de segurança e bloqueia por default todos os endpoints
@@ -20,7 +21,9 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     //Configurações de autenticação
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
+        //Recebe do formulario do spring para autenticao.
+        //Busca se o usuario existe
+        //Verifica se a senha é a mesma
         auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
@@ -32,10 +35,13 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/topicos").permitAll()
                 .antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 //Avisa que quaisquer outras requisições é preciso o usuário estar autenticado
                 .anyRequest().authenticated()
-                //O Spring abre um formulario de login caso queira uma requisicao autenticada
-                .and().formLogin();
+                //desabilita a protecao contra o ataque hacker: cross site request forgery
+                .and().csrf().disable()
+                //Avisa ao spring para nao criar sessão, pois a politica de autenticacao sera STATELESS
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     //Configurações de recursos estáticos (requisições para arquivo js, css, imagens..)
