@@ -8,6 +8,8 @@ import br.alura.forum.model.Topico;
 import br.alura.forum.repository.CursoRepository;
 import br.alura.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,6 +34,7 @@ public class TopicosController {
     private CursoRepository cursoRepository;
 
     @GetMapping
+    @Cacheable(value = "listaDeTopicos") //Avisa pro Spring guardar o retorno em Cash. O 'value' é o 'id' do Cache
     public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
                                  @PageableDefault(sort = "id", direction = Sort.Direction.ASC,
                                          page = 0, size = 10) Pageable paginacao){
@@ -56,6 +59,7 @@ public class TopicosController {
 
     @PostMapping //O @Valid avisa ao Spring para fazer as validaçoes anotadas na classe TopicoForm
     @Transactional //Essa tag avisa que as alterações feitas na classe local devem ser feitas no banco de dados também
+    @CacheEvict(value = "listaDeTopicos", allEntries = true) //Avisa que quando esse metodo for chamado deve apagar um cache especifico
     public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder){
         //@RequestBody = Pega os dados do corpo e não da url
         //Após um post, no java deve-se retornar o link da url do novo item criado
@@ -85,6 +89,7 @@ public class TopicosController {
 
     @PutMapping("/{id}")
     @Transactional //Essa tag avisa que as alterações feitas na classe local devem ser feitas no banco de dados também
+    @CacheEvict(value = "listaDeTopicos", allEntries = true) //Avisa que quando esse metodo for chamado deve apagar um cache especifico
     public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form){
         Optional<Topico> optional = topicoRepository.findById(id);
         if(optional.isPresent()){
@@ -96,6 +101,7 @@ public class TopicosController {
 
     @DeleteMapping("/{id}")
     @Transactional //Essa tag avisa que as alterações feitas na classe local devem ser feitas no banco de dados também
+    @CacheEvict(value = "listaDeTopicos", allEntries = true) //Avisa que quando esse metodo for chamado deve apagar um cache especifico
     public ResponseEntity remover(@PathVariable Long id){
         Optional<Topico> optional = topicoRepository.findById(id);
         if(optional.isPresent()){
