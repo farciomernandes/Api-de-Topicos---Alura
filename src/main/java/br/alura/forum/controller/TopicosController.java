@@ -101,7 +101,7 @@ public class TopicosController {
 
     @DeleteMapping("/{id}")
     @Transactional //Essa tag avisa que as alterações feitas na classe local devem ser feitas no banco de dados também
-    @CacheEvict(value = "listaDeTopicos", allEntries = true) //Avisa que quando esse metodo for chamado deve apagar um cache especifico
+    @CacheEvict(value = "listaDeTopicos", allEntries = true) //Avisa que quando esse metodo For chamado deve apagar um cache especifico
     public ResponseEntity remover(@PathVariable Long id){
         Optional<Topico> optional = topicoRepository.findById(id);
         if(optional.isPresent()){
