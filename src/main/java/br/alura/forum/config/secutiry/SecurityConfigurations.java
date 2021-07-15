@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity //Avisa que e classe de segurança e bloqueia por default todos os endpoints
 @Configuration //Avisa que a classe e de configuracao
@@ -49,7 +50,9 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 //desabilita a protecao contra o ataque hacker: cross site request forgery
                 .and().csrf().disable()
                 //Avisa ao spring para nao criar sessão, pois a politica de autenticacao sera STATELESS
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                //Avisa pra rodar a classe 'AutenticacaoViaToken..' antes de seguir a execucao
+                .and().addFilterBefore(new AutenticacaoViaTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     //Configurações de recursos estáticos (requisições para arquivo js, css, imagens..)

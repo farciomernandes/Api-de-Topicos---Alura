@@ -23,7 +23,7 @@ public class TokenService {
         Date hoje = new Date();
         Date dataExpiracao = new Date(hoje.getTime() + Long.parseLong(expiration));
 
-        return  Jwts.builder()
+        return Jwts.builder()
                 //Qual aplicacao esta criando esse token?
             .setIssuer("API do Fórum Marcio Spring")
                 //Para quem é esse token? Converta em string
