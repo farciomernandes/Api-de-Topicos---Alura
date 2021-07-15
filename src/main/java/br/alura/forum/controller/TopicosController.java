@@ -9,8 +9,9 @@ import br.alura.forum.repository.CursoRepository;
 import br.alura.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,7 +20,6 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,11 +33,13 @@ public class TopicosController {
 
     @GetMapping
     public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
-                                 @RequestParam int pagina, @RequestParam int qtd){
+                                 @PageableDefault(sort = "id", direction = Sort.Direction.ASC,
+                                         page = 0, size = 10) Pageable paginacao){
 
-        //Interface do Spring que ajuda na paginacao e monta no tipo que
+        //Pageable: Interface do Spring que ajuda na paginacao e monta no tipo que
         //o repository.findAll aceita.
-        Pageable paginacao = PageRequest.of(pagina, qtd);
+        //É possível enviar uma ordenacao. Esse params é possível graças ao decorator do arquivo Main
+
 
         if (nomeCurso == null){
             //Enviando paginacao ele retorna o tipo Page
