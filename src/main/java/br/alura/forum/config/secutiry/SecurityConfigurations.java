@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity //Avisa que e classe de segurança e bloqueia por default todos os endpoints
 @Configuration //Avisa que a classe e de configuracao
-@Profile("prod") //Avisa que essas configurações so são validas se o profile for "prod" produção
+@Profile(value={"prod", "test"}) //Avisa que essas configurações so são validas se o profile for "prod" produção
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Autowired

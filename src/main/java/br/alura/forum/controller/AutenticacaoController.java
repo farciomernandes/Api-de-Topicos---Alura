@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
-@Profile("prod") //Essa classe só é chama no ambiente de produção
+@Profile(value={"prod", "test"}) //Essa classe só é chama no ambiente de produção
 public class AutenticacaoController {
 
     @Autowired
