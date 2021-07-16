@@ -4,6 +4,7 @@ import br.alura.forum.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity //Avisa que e classe de segurança e bloqueia por default todos os endpoints
 @Configuration //Avisa que a classe e de configuracao
+@Profile("prod") //Avisa que essas configurações so são validas se o profile for "prod" produção
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Autowired
