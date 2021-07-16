@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
+@Entity //GrantedAuthority diz que essa é uma classe com acessos e autorizaçao no sistema
 public class Perfil implements GrantedAuthority {
     //Classe de perfil de acesso do usuário, se é aluno
     //professor, administrador,desenvolvedor e etc

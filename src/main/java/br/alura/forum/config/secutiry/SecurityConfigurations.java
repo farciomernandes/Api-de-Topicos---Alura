@@ -53,6 +53,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
+                //hasRole: Só pode chamar essa requisicao quem tem o perfil "MODERADOR"
+                .antMatchers(HttpMethod.DELETE, "/topicos/*").hasRole("MODERADOR")
                 //Avisa que quaisquer outras requisições é preciso o usuário estar autenticado
                 .anyRequest().authenticated()
                 //desabilita a protecao contra o ataque hacker: cross site request forgery
