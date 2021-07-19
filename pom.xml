@@ -13,9 +13,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>forum</name>
     <description>Demo project for Spring Boot</description>
-    <packaging>war</packaging>
-    <!-- packaging: Avisa qual tipo de arquivo criado ao fazer deploy-->
-    <!-- o normal é  .jar / aqui foi alterado para "war" -->
 
     <properties>
         <java.version>11</java.version>
@@ -91,15 +88,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!-- tomcat/provided: Diz pra não adicionar o tomcat no war porque -->
-        <!-- o 'tomcat' será provido pelo servidor -->
-
 
     </dependencies>
 
